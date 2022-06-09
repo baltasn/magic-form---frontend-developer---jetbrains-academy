@@ -7,12 +7,17 @@ let addressElement = document.getElementById("address");
 
 let buttonElement = document.getElementById("submit-button")
 
+fillForm();
+window.addEventListener("storage", fillForm);
+
 firstNameElement.addEventListener("input",saveFirstName);
 lastNameElement.addEventListener("input",saveLastName);
 emailElement.addEventListener("input",saveEmail);
 phoneElement.addEventListener("input",savePhone);
 companyElement.addEventListener("input",saveCompany);
 addressElement.addEventListener("input",saveAddress);
+
+buttonElement.addEventListener("click", clickSubmitButton);
 
 
 function saveFirstName() {
@@ -34,16 +39,15 @@ function saveAddress() {
   localStorage.setItem("address",addressElement.value);
 }
 
-//populate refreshed/reopened page
-firstNameElement.value=localStorage.getItem("first-name");
-lastNameElement.value=localStorage.getItem("last-name");
-emailElement.value=localStorage.getItem("email");
-phoneElement.value=localStorage.getItem("phone");
-companyElement.value=localStorage.getItem("company");
-addressElement.value=localStorage.getItem("address");
-
-
-buttonElement.addEventListener("click", clickSubmitButton);
+function fillForm()
+{
+  firstNameElement.value = localStorage.getItem("first-name");
+  lastNameElement.value = localStorage.getItem("last-name");
+  emailElement.value = localStorage.getItem("email");
+  phoneElement.value = localStorage.getItem("phone");
+  companyElement.value = localStorage.getItem("company");
+  addressElement.value = localStorage.getItem("address");
+}
 
 function clickSubmitButton(){
   addToSubmittedValuesArray();
@@ -70,7 +74,7 @@ function emptySubmittedInfo() {
 
 
 function createValuesObject() {
-  let valuesObject = {
+  return  {
   "firstName":firstNameElement.value,
   "lastName":lastNameElement.value,
   "email":emailElement.value,
@@ -78,23 +82,5 @@ function createValuesObject() {
   "company":companyElement.value,
   "address":addressElement.value
   }
-  return valuesObject;
 }
-
-
-
-
-
-
-//NOT WORKING ON CHROME, DOES NOT PASS TESTS
-// function saveValueOnLocalStorage(elementId) {
-//   localStorage.setItem(elementId,(document.getElementById(elementId)===null?'':document.getElementById(elementId).value));
-//   }
-//
-// firstNameElement.addEventListener("input",saveValueOnLocalStorage("first-name"));
-// lastNameElement.addEventListener("input",saveValueOnLocalStorage("last-name"));
-// emailElement.addEventListener("input",saveValueOnLocalStorage("email"));
-// phoneElement.addEventListener("input",saveValueOnLocalStorage("phone"));
-// companyElement.addEventListener("input",saveValueOnLocalStorage("company"));
-// addressElement.addEventListener("input",saveValueOnLocalStorage("address"));
 

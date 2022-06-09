@@ -1,8 +1,21 @@
-let mainHistoryContent = document.getElementById("main-history");
-let submittedValuesArray = JSON.parse(localStorage.getItem("submittedValues") || "[]");
+let mainHistoryContent;
+let submittedValuesArray;
 let content = "";
 
+createPageContent();
+window.addEventListener("storage", createPageContent);
 
+function createPageContent() {
+  retrieveFromLocalStorage();
+  getHistoryCards();
+  showCards();
+}
+
+function retrieveFromLocalStorage(){
+  mainHistoryContent = document.getElementById("main-history");
+  submittedValuesArray = JSON.parse(localStorage.getItem("submittedValues") || "[]");
+  content = "";
+}
 
 function getHistoryCardHtml(i) {
  return `<div class="submit-history-card">
@@ -29,14 +42,22 @@ function getHistoryCardHtml(i) {
       </div>
    </div>`
 }
-for (let i = 0; i < submittedValuesArray.length; i++) {
-  content = content + getHistoryCardHtml(i);
+function getHistoryCards(){
+  for (let i = 0; i < submittedValuesArray.length; i++) {
+    content = content + getHistoryCardHtml(i);
+  }
+}
+
+function showCards(){
+  mainHistoryContent.innerHTML = content;
 }
 
 function deleteCard(index) {
   submittedValuesArray.splice(index,1);
   localStorage.setItem("submittedValues", JSON.stringify(submittedValuesArray));
-  location.reload();
-}
 
-mainHistoryContent.innerHTML = content;
+  //location.reload();  Error: Execution context was destroyed, most likely because of a navigation.
+
+  createPageContent();
+
+}
